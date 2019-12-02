@@ -27,7 +27,7 @@ void stage00_draw(void)
 	RCPInit(glistp);
 	
 	ClearBackground(0, 0, 255);
-	DrawLogo(50,50);
+	// DrawLogo(50,50);
 	
 	gDPFullSync(glistp++);
     gSPEndDisplayList(glistp++);
