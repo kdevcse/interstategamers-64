@@ -2,9 +2,13 @@
 #include "config.h"
 #include "IGLogo32.h"
 
+static u8 color;
+static u8 r;
+static u8 g;
 static u8 b;
 static int x;
 static int y;
+static float hover;
 
 void DrawLogo(int x, int y);
 
@@ -12,19 +16,63 @@ void ClearBackground(u8 r, u8 g, u8 b);
 
 void stage00_init(void)
 {
+	color = 0;
+	r = 0;
+	g = 0;
 	b = 255;
-	x = 0;
-	y = 0;
+	x = 160;
+	y = 120;
+	hover = 0;
 }
 
 void stage00_update(void)
 {
-	if (x > SCREEN_WD - 32 || y > SCREEN_HT - 32){
-		x = 0;
-		y = 0;
-	} else {
-		x += 1;
-		y += 1;
+	nuContDataGetExAll(contData);
+	
+	x = 160 + contData[0].stick_x;
+	y = 120 - contData[0].stick_y;
+	
+	if ((contData[0].trigger & A_BUTTON))
+	{
+		switch(color){
+			case 0:
+				r = 0;
+				g = 255;
+				b = 0;
+				break;
+			case 1:
+				r = 255;
+				g = 0;
+				b = 0;
+				break;
+			case 2:
+				r = 0;
+				g = 0;
+				b = 255;
+				break;
+			case 3:
+				r = 255;
+				g = 255;
+				b = 255;
+				break;
+			default:
+				r = 0;
+				g = 0;
+				b = 0;
+				break;
+		}
+		
+		if(color > 2)
+			color = 0;
+		else
+			color += 1;
+	}
+	
+	if (contData[0].trigger & B_BUTTON)
+	{
+		r = 0;
+		g = 0;
+		b = 255;
 	}
 }
 
@@ -34,7 +82,7 @@ void stage00_draw(void)
 	glistp = glist;
 	RCPInit(glistp);
 	
-	ClearBackground(32, 32, b);
+	ClearBackground(r, g, b);
 	DrawLogo(x,y);
 	
 	gDPFullSync(glistp++);
