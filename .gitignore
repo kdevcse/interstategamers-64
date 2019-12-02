@@ -53,3 +53,4 @@ dkms.conf
 
 # Ignore any json config files
 *.json
+*.n64

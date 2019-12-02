@@ -13,12 +13,19 @@ void ClearBackground(u8 r, u8 g, u8 b);
 void stage00_init(void)
 {
 	b = 255;
-	x = 32;
-	y = 32;
+	x = 0;
+	y = 0;
 }
 
 void stage00_update(void)
 {
+	if (x > SCREEN_WD - 32 || y > SCREEN_HT - 32){
+		x = 0;
+		y = 0;
+	} else {
+		x += 1;
+		y += 1;
+	}
 }
 
 void stage00_draw(void)
