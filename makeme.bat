@@ -10,3 +10,7 @@ set gccsw=-mips3 -mgp32 -mfp32 -funsigned-char -D_LANGUAGE_C -D_ULTRA64 -D__EXTE
 set n64align=on
 set GCC_CELF=ON
 make
+
+::Clean up out files::
+del *.o
+del *.out
