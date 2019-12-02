@@ -1,5 +1,5 @@
 #include <nusys.h>
-#include "stages.h"
+#include "assets/stages/definitions.h"
 #include "config.h"
 
 static void vsyncCallback(int pendingTaskCount);

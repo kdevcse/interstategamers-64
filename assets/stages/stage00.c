@@ -1,6 +1,7 @@
 #include <nusys.h>
-#include "config.h"
-#include "IGLogo32.h"
+#include "../../config.h"
+#include "../sprites/IGLogo32.h"
+#include "definitions.h"
 
 static u8 color;
 static u8 r;

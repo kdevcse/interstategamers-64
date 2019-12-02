@@ -2,7 +2,8 @@
 N64KITDIR   = c:/nintendo/n64kit
  
 TARGET  	= first
-CODEFILES   = main.c graphic.c stage00.c 
+CODEFILES   = main.c graphic.c
+OBJECTFILES = assets/includes/stages.o
 
 include $(ROOT)/usr/include/make/PRdefs
  
@@ -14,7 +15,7 @@ NUSYSINC	= $(NUSYSDIR)/include
 NUSYSLIB	= $(NUSYSDIR)/lib
  
 NUOBJ   	= $(NUSYSLIB)/nusys.o
-CODEOBJECTS = $(CODEFILES:.c=.o) $(NUOBJ)
+CODEOBJECTS = $(CODEFILES:.c=.o) $(NUOBJ) $(OBJECTFILES)
  
 CUSTFLAGS   =
 LCINCS  	= -I$(NUSYSINC)
