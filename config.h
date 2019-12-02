@@ -3,11 +3,6 @@
  
 	#define SCREEN_WD   320
 	#define SCREEN_HT   240
-	#define NTSC    0
-	#define PAL     1
-	#define MPAL    2 // Brazilian TV’s.
-	#define TV_TYPE PAL
-
  
 	#define GLIST_LENGTH	2048
 	

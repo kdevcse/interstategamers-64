@@ -2,6 +2,7 @@
 #include "config.h"
 #include "IGLogo32.h"
 
+static u8 b;
 static int x;
 static int y;
 
@@ -11,7 +12,7 @@ void ClearBackground(u8 r, u8 g, u8 b);
 
 void stage00_init(void)
 {
-	//b = 255;
+	b = 255;
 	x = 32;
 	y = 32;
 }
@@ -26,8 +27,8 @@ void stage00_draw(void)
 	glistp = glist;
 	RCPInit(glistp);
 	
-	ClearBackground(0, 0, 255);
-	// DrawLogo(50,50);
+	ClearBackground(32, 32, b);
+	DrawLogo(x,y);
 	
 	gDPFullSync(glistp++);
     gSPEndDisplayList(glistp++);
@@ -57,14 +58,14 @@ void DrawLogo(int x, int y)
     gDPSetTexturePersp(glistp++, G_TP_NONE);
     gDPLoadTextureBlock(glistp++, 
         IGLogo32, 
-        G_IM_FMT_RGBA, G_IM_SIZ_16b, 
-        16, 16, 0, 
+        G_IM_FMT_RGBA, G_IM_SIZ_32b, 
+        32, 32, 0, 
         G_TX_WRAP, G_TX_WRAP, 
         G_TX_NOMASK, G_TX_NOMASK, 
         G_TX_NOLOD, G_TX_NOLOD);
     gSPTextureRectangle(glistp++, 
-        x-8<<2, y-8<<2, 
-        (x + 8)<<2, (y + 8)<<2,
+        x-16<<2, y-16<<2, 
+        (x + 16)<<2, (y + 16)<<2,
         G_TX_RENDERTILE, 
         0 << 5, 0 << 5, 
         1 << 10, 1 << 10);
