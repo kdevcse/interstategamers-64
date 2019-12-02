@@ -46,6 +46,14 @@ void stage00_draw(void)
 
 void ClearBackground(u8 r, u8 g, u8 b)
 {
+	gDPPipeSync(glistp++);
+    gDPSetCycleType(glistp++, G_CYC_FILL);
+    gDPSetDepthImage(glistp++, nuGfxZBuffer);
+    gDPSetColorImage(glistp++, G_IM_FMT_RGBA, G_IM_SIZ_16b, SCREEN_WD, nuGfxZBuffer);
+    gDPSetFillColor(glistp++, (GPACK_ZDZ(G_MAXFBZ, 0) << 16 | GPACK_ZDZ(G_MAXFBZ, 0)));
+    gDPFillRectangle(glistp++, 0, 0, SCREEN_WD - 1, SCREEN_HT - 1);
+    gDPPipeSync(glistp++);
+	
     gDPSetCycleType(glistp++, G_CYC_FILL);
     gDPSetColorImage(glistp++, G_IM_FMT_RGBA, G_IM_SIZ_16b, SCREEN_WD,
                      osVirtualToPhysical(nuGfxCfb_ptr));

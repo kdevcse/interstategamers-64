@@ -30,4 +30,5 @@ void RCPInit(Gfx * glistp)
 {
     gSPSegment(glistp++, 0, 0);
 	gSPDisplayList(glistp++, OS_K0_TO_PHYSICAL(rspinit_dl));
+	gSPDisplayList(glistp++, OS_K0_TO_PHYSICAL(rdpinit_dl));
 }
