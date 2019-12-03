@@ -3,11 +3,11 @@
 
 	/* Title img positions */
 	#define TITLE_X_POS   60
-	#define TITLE_Y_POS   70
+	#define TITLE_Y_POS   60
 	
 	/* IG icon positions */
-	#define ICON_START_X_POS	70
-	#define ICON_START_Y_POS	190
+	#define ICON_START_X_POS	128
+	#define ICON_START_Y_POS	160
 	
 	/* Default Background Color Values (Official IG Blue) */
 	#define DEF_BG_R	45

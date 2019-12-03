@@ -7,20 +7,19 @@
 static u8 r;
 static u8 g;
 static u8 b;
-static int pos_x;
 static int pos_y;
 static u8 debug;
 
 void DrawTitleImg(int x, int y);
 
-void DrawLogo(int x, int y);
+void DrawLogo(int x, int y, float scale_x, float scale_y);
 
 void ClearBackground(u8 r, u8 g, u8 b);
 
 void stage00_init(void)
 {
 	debug = 0;
-	pos_x = ICON_START_X_POS, pos_y = ICON_START_Y_POS;
+	pos_y = ICON_START_Y_POS;
 	
 	//Initialize Console
 	nuDebConWindowPos(0, 25, 25);
@@ -30,8 +29,10 @@ void stage00_update(void)
 {
 	nuContDataGetExAll(contData);
 	
-	pos_x = ICON_START_X_POS + contData[0].stick_x;
-	pos_y = ICON_START_Y_POS - contData[0].stick_y;
+	if(contData[0].stick_y < 0)
+		pos_y = ICON_START_Y_POS + 35;
+	else if (contData[0].stick_y > 0)
+		pos_y = ICON_START_Y_POS;
 	
 	// Set debug mode
 	if(contData[0].trigger & START_BUTTON){
@@ -57,8 +58,8 @@ void stage00_draw(void)
 		ClearBackground(0, 0, 0);
 	} else {
 		ClearBackground(DEF_BG_R, DEF_BG_G, DEF_BG_B);
-		DrawTitleImg(TITLE_X_POS,TITLE_Y_POS);
-		DrawLogo(pos_x,pos_y);
+		DrawTitleImg(TITLE_X_POS, TITLE_Y_POS);
+		DrawLogo(ICON_START_X_POS, pos_y, 0.9, 0.9);
 	}
 
 	// Sync
@@ -135,8 +136,13 @@ void DrawTitleImg(int x, int y){
 	}
 }
 
-void DrawLogo(int x, int y)
+void DrawLogo(int x, int y, float scale_x, float scale_y)
 {
+    float w = 32*scale_x;
+    float h = 32*scale_y;
+    s32 sx = (int) ((1<<10) / scale_x + 0.5F);
+    s32 sy = (int) ((1<<10) / scale_y + 0.5F);
+	
     gDPSetCycleType(glistp++, G_CYC_1CYCLE);
     gDPSetCombineMode(glistp++, G_CC_DECALRGBA, G_CC_DECALRGBA);
     gDPSetRenderMode(glistp++, G_RM_AA_ZB_TEX_EDGE, G_RM_AA_ZB_TEX_EDGE);
@@ -151,10 +157,10 @@ void DrawLogo(int x, int y)
         G_TX_NOMASK, G_TX_NOMASK, 
         G_TX_NOLOD, G_TX_NOLOD);
     gSPTextureRectangle(glistp++, 
-        x-16<<2, y-16<<2, 
-        (x + 16)<<2, (y + 16)<<2,
+		((int)(x-w/2))<<2, ((int)(y-h/2))<<2,
+		((int)(x+w/2))<<2, ((int)(y+h/2))<<2, 
         G_TX_RENDERTILE, 
         0 << 5, 0 << 5, 
-        1 << 10, 1 << 10);
+        sx, sy);
     gDPPipeSync(glistp++);
 }
