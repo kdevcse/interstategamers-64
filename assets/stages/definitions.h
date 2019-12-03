@@ -2,11 +2,11 @@
 #define N64_STAGES_H
 
 	/* Title img positions */
-	#define TITLE_X_POS   60
+	#define TITLE_X_POS   50
 	#define TITLE_Y_POS   60
 	
 	/* IG icon positions */
-	#define ICON_START_X_POS	128
+	#define ICON_START_X_POS	83
 	#define ICON_START_Y_POS	160
 	
 	/* Default Background Color Values (Official IG Blue) */

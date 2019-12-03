@@ -2,23 +2,30 @@
 #include "../../config.h"
 #include "../sprites/IGLogo32.h"
 #include "../sprites/IGMainWhite200.h"
+#include "../sprites/dGasm.h"
+#include "../sprites/dOof.h"
+#include "../sprites/kappaRide.h"
 #include "definitions.h"
 
 static u8 r;
 static u8 g;
 static u8 b;
 static int pos_y;
-static u8 debug;
+static int scene;
+static u8 gasm;
 
-void DrawTitleImg(int x, int y);
+void DrawBigImg32(int x, int y, int w, int h, unsigned int img[]);
 
 void DrawLogo(int x, int y, float scale_x, float scale_y);
 
 void ClearBackground(u8 r, u8 g, u8 b);
 
+void DrawScene();
+
 void stage00_init(void)
 {
-	debug = 0;
+	scene = 0;
+	gasm = 0;
 	pos_y = ICON_START_Y_POS;
 	
 	//Initialize Console
@@ -36,10 +43,15 @@ void stage00_update(void)
 	
 	// Set debug mode
 	if(contData[0].trigger & START_BUTTON){
-		if (debug)
-			debug = 0;
+		if (scene > -1)
+			scene = -1;
 		else
-			debug = 1;
+			scene = 0;
+	}
+	
+	if(contData[0].trigger & A_BUTTON){
+		if (scene > -1)
+			scene++;
 	}
 }
 
@@ -54,13 +66,7 @@ void stage00_draw(void)
 	RCPInit(glistp);
 	
 	// Draw
-	if (debug) {
-		ClearBackground(0, 0, 0);
-	} else {
-		ClearBackground(DEF_BG_R, DEF_BG_G, DEF_BG_B);
-		DrawTitleImg(TITLE_X_POS, TITLE_Y_POS);
-		DrawLogo(ICON_START_X_POS, pos_y, 0.9, 0.9);
-	}
+	DrawScene();
 
 	// Sync
 	gDPFullSync(glistp++);
@@ -69,7 +75,7 @@ void stage00_draw(void)
 		NU_GFX_UCODE_F3DEX, NU_SC_SWAPBUFFER);
 		
 	//Debug commands
-	if (debug) {
+	if (scene == -1) {
 		nuDebConClear(NU_DEB_CON_WINDOW0);
 		nuDebConCPuts(NU_DEB_CON_WINDOW0, "Debug Menu\n\n");
 		nuDebConDisp(NU_SC_SWAPBUFFER);
@@ -96,9 +102,8 @@ void ClearBackground(u8 r, u8 g, u8 b)
     gDPPipeSync(glistp++);
 }
 
-void DrawTitleImg(int x, int y){
-	int w = 200, h = 66;
-	int i = 0, j = 0;
+void DrawBigImg32(int x, int y, int w, int h, unsigned int img[]){
+	int i = 0;
 	
     gDPSetCycleType(glistp++, G_CYC_1CYCLE);
     gDPSetCombineMode(glistp++, G_CC_DECALRGBA, G_CC_DECALRGBA);
@@ -111,7 +116,7 @@ void DrawTitleImg(int x, int y){
 	{
 		gDPLoadMultiTile(
 			glistp++,
-			IGMainWhite200,          // timg - Our sprite array
+			img,          			  // timg - Our sprite array
 			0,                        // tmem - Address to store in TMEM
 			G_TX_RENDERTILE,          // rt - Tile descriptor
 			G_IM_FMT_RGBA,            // fmt - Our image format
@@ -163,4 +168,34 @@ void DrawLogo(int x, int y, float scale_x, float scale_y)
         0 << 5, 0 << 5, 
         sx, sy);
     gDPPipeSync(glistp++);
+}
+
+void DrawScene(){
+	switch(scene){
+		case -1:
+			ClearBackground(0, 0, 0);
+			break;
+		case 0:
+			ClearBackground(DEF_BG_R, DEF_BG_G, DEF_BG_B);
+			DrawBigImg32(TITLE_X_POS, TITLE_Y_POS, 200, 66, IGMainWhite200);
+			DrawLogo(ICON_START_X_POS, pos_y, 1, 1);
+			break;
+		case 1:
+			ClearBackground(DEF_BG_R, DEF_BG_G, DEF_BG_B);
+			DrawBigImg32(TITLE_X_POS, TITLE_Y_POS, 112, 107, dGasm);
+			break;
+		case 2:
+			ClearBackground(DEF_BG_R, DEF_BG_G, DEF_BG_B);
+			DrawBigImg32(TITLE_X_POS, TITLE_Y_POS, 112, 112, dOof);
+			break;
+		case 3:
+			ClearBackground(DEF_BG_R, DEF_BG_G, DEF_BG_B);
+			DrawBigImg32(TITLE_X_POS, TITLE_Y_POS, 116, 128, kappaRide);
+			break;
+		default:
+			ClearBackground(DEF_BG_R, DEF_BG_G, DEF_BG_B);
+			DrawBigImg32(TITLE_X_POS, TITLE_Y_POS, 200, 66, IGMainWhite200);
+			DrawLogo(ICON_START_X_POS, pos_y, 1, 1);
+			scene = 0;
+	}
 }
