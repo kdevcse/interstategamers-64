@@ -9,21 +9,26 @@ static u8 g;
 static u8 b;
 static int x;
 static int y;
-static float hover;
+static u8 debug;
+static char * con_msg;
 
 void DrawLogo(int x, int y);
 
 void ClearBackground(u8 r, u8 g, u8 b);
 
+void ConsoleWrite(const char * s);
+
 void stage00_init(void)
 {
+	con_msg = "Blue";
 	color = 0;
 	r = 0;
 	g = 0;
 	b = 255;
 	x = 160;
 	y = 120;
-	hover = 0;
+	debug = 0;
+	nuDebConWindowShow(0, NU_DEB_CON_WINDOW_ON);
 }
 
 void stage00_update(void)
@@ -40,21 +45,25 @@ void stage00_update(void)
 				r = 0;
 				g = 255;
 				b = 0;
+				con_msg = "Green";
 				break;
 			case 1:
 				r = 255;
 				g = 0;
 				b = 0;
+				con_msg = "Red";
 				break;
 			case 2:
 				r = 0;
 				g = 0;
 				b = 255;
+				con_msg = "Blue";
 				break;
 			case 3:
 				r = 255;
 				g = 255;
 				b = 255;
+				con_msg = "White";
 				break;
 			default:
 				r = 0;
@@ -69,6 +78,13 @@ void stage00_update(void)
 			color += 1;
 	}
 	
+	if(contData[0].trigger & START_BUTTON){
+		if (debug)
+			debug = 0;
+		else
+			debug = 1;
+	}
+	
 	if (contData[0].trigger & B_BUTTON)
 	{
 		r = 0;
@@ -80,11 +96,19 @@ void stage00_update(void)
 void stage00_draw(void)
 {
 	// Initialize RCP
+	const char * t = con_msg;
 	glistp = glist;
 	RCPInit(glistp);
 	
-	ClearBackground(r, g, b);
-	DrawLogo(x,y);
+	if(debug){
+		nuDebConClear(0);
+		// ConsoleWrite("Debug Menu\n");
+		nuDebConPrintf(0,"Debug Menu\n\nCurrent Color: %s",t);
+		nuDebConDisp(NU_SC_SWAPBUFFER);
+	} else {
+		ClearBackground(r, g, b);
+		DrawLogo(x,y);
+	}
 	
 	gDPFullSync(glistp++);
     gSPEndDisplayList(glistp++);
@@ -134,4 +158,9 @@ void DrawLogo(int x, int y)
         0 << 5, 0 << 5, 
         1 << 10, 1 << 10);
     gDPPipeSync(glistp++);
+}
+
+void ConsoleWrite(const char * s) {
+	nuDebConPrintf(0,s);
+	nuDebConDisp(NU_SC_SWAPBUFFER);
 }

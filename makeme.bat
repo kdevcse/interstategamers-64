@@ -14,3 +14,7 @@ make
 ::Clean up out files::
 del *.o
 del *.out
+
+:: Del old ROM and place new one ::
+del G:\first.n64
+move first.n64 G:\
