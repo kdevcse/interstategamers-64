@@ -10,25 +10,25 @@ static u8 b;
 static int x;
 static int y;
 static u8 debug;
-static char * con_msg;
 
 void DrawLogo(int x, int y);
 
 void ClearBackground(u8 r, u8 g, u8 b);
 
-void ConsoleWrite(const char * s);
+void SwitchColor();
 
 void stage00_init(void)
 {
-	con_msg = "Blue";
+	debug = 0;
 	color = 0;
 	r = 0;
 	g = 0;
 	b = 255;
 	x = 160;
 	y = 120;
-	debug = 0;
-	nuDebConWindowShow(0, NU_DEB_CON_WINDOW_ON);
+	
+	//Initialize Console
+	nuDebConWindowPos(0, 25, 25);
 }
 
 void stage00_update(void)
@@ -39,45 +39,9 @@ void stage00_update(void)
 	y = 120 - contData[0].stick_y;
 	
 	if ((contData[0].trigger & A_BUTTON))
-	{
-		switch(color){
-			case 0:
-				r = 0;
-				g = 255;
-				b = 0;
-				con_msg = "Green";
-				break;
-			case 1:
-				r = 255;
-				g = 0;
-				b = 0;
-				con_msg = "Red";
-				break;
-			case 2:
-				r = 0;
-				g = 0;
-				b = 255;
-				con_msg = "Blue";
-				break;
-			case 3:
-				r = 255;
-				g = 255;
-				b = 255;
-				con_msg = "White";
-				break;
-			default:
-				r = 0;
-				g = 0;
-				b = 0;
-				break;
-		}
-		
-		if(color > 2)
-			color = 0;
-		else
-			color += 1;
-	}
+		SwitchColor();
 	
+	// Set debug mode
 	if(contData[0].trigger & START_BUTTON){
 		if (debug)
 			debug = 0;
@@ -85,35 +49,52 @@ void stage00_update(void)
 			debug = 1;
 	}
 	
-	if (contData[0].trigger & B_BUTTON)
+	//Reset color to blue
+	if (contData[0].trigger & Z_TRIG)
 	{
 		r = 0;
 		g = 0;
 		b = 255;
+		color = 0;
 	}
 }
 
 void stage00_draw(void)
 {
+	char r_str[3];
+	char g_str[3];
+	char b_str[3];
+	
 	// Initialize RCP
-	const char * t = con_msg;
 	glistp = glist;
 	RCPInit(glistp);
 	
-	if(debug){
-		nuDebConClear(0);
-		// ConsoleWrite("Debug Menu\n");
-		nuDebConPrintf(0,"Debug Menu\n\nCurrent Color: %s",t);
-		nuDebConDisp(NU_SC_SWAPBUFFER);
+	// Draw
+	if (debug) {
+		ClearBackground(0, 0, 0);
 	} else {
 		ClearBackground(r, g, b);
 		DrawLogo(x,y);
 	}
-	
+
+	// Sync
 	gDPFullSync(glistp++);
-    gSPEndDisplayList(glistp++);
-    nuGfxTaskStart(glist, (s32)(glistp - glist) * sizeof(Gfx),
-                   NU_GFX_UCODE_F3DEX, NU_SC_SWAPBUFFER);
+	gSPEndDisplayList(glistp++);
+	nuGfxTaskStart(glist, (s32)(glistp - glist) * sizeof(Gfx),
+		NU_GFX_UCODE_F3DEX, NU_SC_SWAPBUFFER);
+		
+	//Debug commands
+	if (debug) {
+		nuDebConClear(NU_DEB_CON_WINDOW0);
+		nuDebConCPuts(NU_DEB_CON_WINDOW0, "Debug Menu\n\n");
+		sprintf(r_str, "%d", r);
+		nuDebConPrintf(NU_DEB_CON_WINDOW0, "R: %s\n", r_str);
+		sprintf(g_str, "%d", g);
+		nuDebConPrintf(NU_DEB_CON_WINDOW0, "G: %s\n", g_str);
+		sprintf(b_str, "%d", b);
+		nuDebConPrintf(NU_DEB_CON_WINDOW0, "B: %s\n", b_str);
+		nuDebConDisp(NU_SC_SWAPBUFFER);
+	}
 
 }
 
@@ -160,7 +141,37 @@ void DrawLogo(int x, int y)
     gDPPipeSync(glistp++);
 }
 
-void ConsoleWrite(const char * s) {
-	nuDebConPrintf(0,s);
-	nuDebConDisp(NU_SC_SWAPBUFFER);
+void SwitchColor(){
+	switch(color){
+		case 0:
+			r = 0;
+			g = 255;
+			b = 0;
+			break;
+		case 1:
+			r = 255;
+			g = 0;
+			b = 0;
+			break;
+		case 2:
+			r = 255;
+			g = 255;
+			b = 255;
+			break;
+		case 3:
+			r = 0;
+			g = 0;
+			b = 255;
+			break;
+		default:
+			r = 0;
+			g = 0;
+			b = 0;
+			break;
+	}
+	
+	if(color > 2)
+		color = 0;
+	else
+		color += 1;
 }
