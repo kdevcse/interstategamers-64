@@ -2,7 +2,7 @@
 N64KITDIR   = c:/nintendo/n64kit
  
 TARGET  	= first
-CODEFILES   = main.c graphic.c
+CODEFILES   = main.c graphic.c helper.c
 OBJECTFILES = assets/includes/stages.o
 
 include $(ROOT)/usr/include/make/PRdefs

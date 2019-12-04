@@ -1,6 +1,9 @@
 #ifndef N64_STAGES_H
 #define N64_STAGES_H
 
+	#define STAGE_TITLE	0
+	#define STAGE_GAME	1
+
 	/* Title img positions */
 	#define TITLE_X_POS   50
 	#define TITLE_Y_POS   60
@@ -21,8 +24,14 @@
 	#define DEF_BG_G	50
 	#define DEF_BG_B	175
  
+	/* Title Screen */
 	void stage00_init();
 	void stage00_update();
 	void stage00_draw();
+ 
+	/* Main Game */
+	void stage01_init();
+	void stage01_update();
+	void stage01_draw();
  
 #endif

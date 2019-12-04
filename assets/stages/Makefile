@@ -1,6 +1,6 @@
 N64KITDIR	= c:\nintendo\n64kit
  
-CODEFILES	= stage00.c
+CODEFILES	= stage00.c stage01.c
 OBJECTNAME	= stages
 
 NUSYSINCDIR	= $(N64KITDIR)\nusys\include

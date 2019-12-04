@@ -21,8 +21,14 @@
 	Gfx* glistp;
 	extern NUContData contData[1];
 	extern u8 contPattern;
+	extern int current_stage;
 	
 	/* Functions */
 	void RCPInit(Gfx * glistp);
+	
+	/* Helper Functions */
+	void DrawText(int x, int y, char* text, char halign, char valign);
+	void ClearBackground(u8 r, u8 g, u8 b);
+	void DrawBigImg32(int x, int y, int w, int h, unsigned int img[]);
 	
 #endif
