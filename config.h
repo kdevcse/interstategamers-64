@@ -7,6 +7,14 @@
 	#define GLIST_LENGTH	2048
 	#define CheckController(cont) (contPattern & (1<<(cont)))
 	
+    // Text defines
+    #define TEXT_HALIGN_LEFT 0
+    #define TEXT_HALIGN_CENTER 1
+    #define TEXT_HALIGN_RIGHT 2
+    #define TEXT_VALIGN_TOP 0
+    #define TEXT_VALIGN_MIDDLE 1
+    #define TEXT_VALIGN_BOTTOM 2
+	
 	/* Defintions */
 	
 	Gfx glist[GLIST_LENGTH];
