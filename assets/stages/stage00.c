@@ -43,7 +43,8 @@ void stage00_update(void)
 	}
 	
 	if(contData[0].trigger & A_BUTTON){
-		current_stage = 1;
+		if (scene > -1)
+			scene++;
 	}
 }
 
@@ -127,5 +128,6 @@ static void DrawScene(){
 			DrawBigImg32(TITLE_X_POS, TITLE_Y_POS, 200, 66, IGMainWhite200);
 			DrawIcon(ICON_DEFAULT_X_POS, pos_y, 0.5, 0.5);
 			scene = 0;
+			current_stage = 1;
 	}
 }

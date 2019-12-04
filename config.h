@@ -21,7 +21,7 @@
 	Gfx* glistp;
 	extern NUContData contData[1];
 	extern u8 contPattern;
-	extern int current_stage;
+	extern volatile short int current_stage;
 	
 	/* Functions */
 	void RCPInit(Gfx * glistp);

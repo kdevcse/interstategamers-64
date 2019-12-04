@@ -7,7 +7,7 @@ static void vsyncGameCallback(int pendingTaskCount);
 NUContData contData[1];
 u8 contPattern;
 
-int current_stage;
+volatile short int current_stage;
 
 void mainproc(void * dummy){
 	nuGfxInit();
