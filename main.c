@@ -18,16 +18,16 @@ void mainproc(void * dummy){
 	while(1){
 		switch(current_stage){
 			case STAGE_TITLE:
+				current_stage = -1;
 				stage00_init();
 				nuGfxFuncSet((NUGfxFunc)vsyncTitleScreenCallback);
 				nuGfxDisplayOn();
-				current_stage = -1;
 				break;
 			case STAGE_GAME:
-				stage01_init();
-				nuGfxFuncSet((NUGfxFunc)vsyncTitleScreenCallback);
-				nuGfxDisplayOn();
 				current_stage = -1;
+				stage01_init();
+				nuGfxFuncSet((NUGfxFunc)vsyncGameCallback);
+				nuGfxDisplayOn();
 				break;
 			default:
 				break;
