@@ -28,6 +28,7 @@
 	
 	/* Helper Functions */
 	void DrawText(int x, int y, char* text, char halign, char valign);
+	void BreakWord(char * word, int cutoff);
 	void ClearBackground(u8 r, u8 g, u8 b);
 	void DrawBigImg32(int x, int y, int w, int h, unsigned int img[]);
 	

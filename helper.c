@@ -224,3 +224,21 @@ void DrawText(int x, int y, char* text, char halign, char valign)
     }
     gDPPipeSync(glistp++);
 }
+
+void BreakWord(char * word, int cutoff){
+	int i = 0, done = 0;
+	const int period_count = 3;
+	
+	if (strlen(word) - cutoff <= period_count)
+		return;
+	
+	for(i; i < strlen(word); i++){
+		if (i > cutoff & done <= period_count){
+			word[i] = '.';
+			done += 1;
+		}
+		
+		if (done >= period_count)
+			word[i] = NULL;
+	}
+}

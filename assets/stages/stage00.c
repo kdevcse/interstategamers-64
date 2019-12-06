@@ -46,6 +46,7 @@ void stage00_update(void)
 		if (pos_y == ICON_DEFAULT_Y_POS)
 			current_stage = 1;
 		
+		/* TODO: ADD 2nd MENU OPTION */
 		return;
 	}
 }
