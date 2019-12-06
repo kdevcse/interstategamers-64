@@ -23,6 +23,12 @@ void stage01_update(void)
 {
 	nuContDataGetExAll(contData);
 	
+	//Exit back to menu
+	if (contData[0].trigger & B_BUTTON){
+		current_stage = 0;
+		return;
+	}
+	
 	// Set debug mode
 	if (contData[0].trigger & START_BUTTON){
 		if (scene > -1)
@@ -80,6 +86,12 @@ static void DrawScene(){
 			break;
 		case 0:
 			ClearBackground(DEF_BG_R, DEF_BG_G, DEF_BG_B);
+			DrawText(
+				(int)((240 - strlen(table[selected_game][1]) * 4.25)/2),
+				30,
+				table[selected_game][1],
+				TEXT_HALIGN_LEFT, TEXT_VALIGN_TOP
+			);
 			DrawTable();
 			break;
 		default:
@@ -92,7 +104,7 @@ static void DrawScene(){
 
 static void DrawTable(){
 	int i, j;
-	char game[28];
+	char game[30];
 	for(j = 0; j < NUM_OF_COLUMNS; j++) {
 		
 		//Draw Header
@@ -112,11 +124,11 @@ static void DrawTable(){
 			if (selected_game + i >= NUM_OF_ROWS)
 				break;
 			
-			//Word break algorithm
-			if (strlen(table[selected_game + i][j]) > WORD_BREAK_POS)
-				BreakWord(table[selected_game + i][j], WORD_BREAK_POS);
-			
 			sprintf(game, "%s", table[selected_game + i][j]);
+			
+			//Word break algorithm
+			if (strlen(game) > WORD_BREAK_POS)
+				BreakWord(game, WORD_BREAK_POS);
 					
 			//Draw Row
 			DrawText(
