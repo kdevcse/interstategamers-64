@@ -23,7 +23,7 @@ char table[NUM_OF_ROWS][NUM_OF_COLUMNS][MAX_CHAR] = {
 	{"8", "Star Fox 64", "91.58"},
 	{"9", "Stardew Valley", "91.08"},
 	{"10", "Paper Mario: TTYD", "91.06"},
-	{"11", "Hello", "90.92"},
+	{"11", "Super Mario Galaxy 2", "90.92"},
 	{"12", "Cave Story", "90.67"},
 	{"13", "Age of Empires II", "90.25"},
 	{"14", "RollerCoaster Tycoon", "89.92"},
